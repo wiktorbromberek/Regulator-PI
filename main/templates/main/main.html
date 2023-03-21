@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Termostat{% endblock title %}
+
+{% block content %}
+
+    <form class="ui large form" method="post" action={% url 'main:home' %}>
+        {% csrf_token %}
+        <div class="row mb-3 text-center">
+            <div class="col-md-4 themed-grid-col">
+                <b>Wzmocnienie reglatora</b>
+            </div>
+            <div class="col-md-4 themed-grid-col">
+                <b>Czas zdwojenia</b>
+            </div>
+            <div class="col-md-4 themed-grid-col">
+                <b>Temperatura zewnętrzna</b>
+            </div>
+        </div>
+
+        <div class="row mb-3 text-center">
+            <div class="col-md-4 themed-grid-col">
+                <input type="range" class="form-range" min="0" max="2" step="0.01" id="customRange1" oninput="kpr.value = this.value" value={{kp}} name="kp">
+                <output id="kpr">{{ kp }}</output>
+            </div>
+            <div class="col-md-4 themed-grid-col">
+                <input type="range" class="form-range" min="0" max="2" step="0.01" id="customRange1" oninput="tir.value = this.value" value={{ti}} name="ti">
+                <output id="tir">{{ ti }}</output>
+            </div>
+            <div class="col-md-4 themed-grid-col">
+                <input type="range" class="form-range" min="-10" max="35" step="0.1" id="customRange1" oninput="t_outr.value = this.value" value={{t_out}} name="t_out">
+                <output id="t_outr">{{ t_out }}</output>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row mb-3 text-center">
+            <div class="col-md-4 themed-grid-col">
+                <b>Temperatura zadana</b>
+            </div>
+            <div class="col-md-4 themed-grid-col">
+                <b>Długość i szerkość pokoju</b>
+            </div>
+            <div class="col-md-4 themed-grid-col">
+                <b>Wysokość pokoju</b>
+            </div>
+        </div>
+
+        <div class="row mb-3 text-center">
+            <div class="col-md-4 themed-grid-col">
+                <input type="range" class="form-range" min="-10" max="35" step="0.1" id="customRange1" oninput="t_setr.value = this.value" value={{t_set}} name="t_set">
+                <output id="t_setr">{{ t_set }}</output>
+            </div>
+            <div class="col-md-4 themed-grid-col">
+                <input type="range" class="form-range" min="0" max="15" step="0.5" id="customRange1" oninput="room_lenr.value = this.value" value={{room_len}} name="room_len">
+                <output id="room_lenr">{{ room_len }}</output>
+            </div>
+            <div class="col-md-4 themed-grid-col">
+                <input type="range" class="form-range" min="0" max="15" step="0.5" id="customRange1" oninput="room_hgr.value = this.value" value={{room_hg}} name="room_hg">
+                <output id="room_hgr">{{ room_hg }}</output>
+            </div>
+        </div>
+
+
+        <div class="px-4 py-5 my-5 text-center">
+            <div class="col-lg-6 mx-auto">
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Generuj Wykres</button>
+                <a href="{% url 'main:home' %}" type="button" class="btn btn-outline-secondary btn-lg px-4">Reset</a>
+            </div>
+            </div>
+            <hr>
+        </div>
+    </form>
+    {% comment %} style="display: flex; justify-content: center;" {% endcomment %}
+    <div style="display: flex; flex-direction: column; align-items: center; ">
+        <hr>
+        {{script1 | safe}}
+        {{div1 | safe}}
+        <hr>
+        {{script2 | safe}}
+        {{div2 | safe}}
+        <hr>
+        {{script3 | safe}}
+        {{div3 | safe}}
+    </div>
+{% endblock content %}
+
+
+{% block additional_script %}
+
+    <script text="type/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.0.3.min.js"></script>
+    <script text="type/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.0.3.min.js"></script>
+    <script text="type/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.0.3.min.js"></script>
+    <script text="type/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-api-3.0.3.min.js"></script>
+
+{% endblock additional_script %}
